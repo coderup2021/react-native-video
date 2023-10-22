@@ -336,6 +336,7 @@ export type VideoComponentType = HostComponent<VideoNativeProps>;
 export interface VideoManagerType {
   save: (reactTag: number) => Promise<void>;
   setPlayerPauseState: (paused: boolean, reactTag: number) => Promise<void>;
+  getCurrentPosition: () => Promise<number>;
   setLicenseResult: (
     result: string,
     licenseUrl: string,

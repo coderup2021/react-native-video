@@ -34,11 +34,14 @@ import {
   type OnReceiveAdEventData,
   VideoManager,
 } from './VideoNativeComponent';
-import type {ReactVideoProps} from './types/video';
-import {getReactTag, resolveAssetSourceForVideo} from './utils';
+import type { ReactVideoProps } from './types/video';
+import { getReactTag, resolveAssetSourceForVideo } from './utils';
 
 export interface VideoRef {
   seek: (time: number, tolerance?: number) => void;
+  // seekForward: (time: number, tolerance?: number) => void;
+  // seekBackward: (time: number, tolerance?: number) => void;
+  getCurrentPosition: () => Promise<number>
   resume: () => void;
   pause: () => void;
   presentFullscreenPlayer: () => void;
@@ -225,6 +228,10 @@ const Video = forwardRef<VideoRef, ReactVideoProps>(
         },
       })();
     }, []);
+
+    const getCurrentPosition = useCallback(() => {
+      return VideoManager.getCurrentPosition()
+    }, [])
 
     const presentFullscreenPlayer = useCallback(() => {
       setIsFullscreen(true);
@@ -444,6 +451,7 @@ const Video = forwardRef<VideoRef, ReactVideoProps>(
         save,
         pause,
         resume,
+        getCurrentPosition,
         restoreUserInterfaceForPictureInPictureStopCompleted,
       }),
       [
@@ -453,6 +461,7 @@ const Video = forwardRef<VideoRef, ReactVideoProps>(
         save,
         pause,
         resume,
+        getCurrentPosition,
         restoreUserInterfaceForPictureInPictureStopCompleted,
       ],
     );

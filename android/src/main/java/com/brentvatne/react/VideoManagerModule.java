@@ -32,6 +32,20 @@ public class VideoManagerModule extends ReactContextBaseJavaModule {
         });
     }
 
+    @ReactMethod
+    public void getPlayerCurrentPosition(Promise promise) {
+        UIManagerModule uiManager = getReactApplicationContext().getNativeModule(UIManagerModule.class);
+        uiManager.prependUIBlock(manager -> {
+            View view = manager.resolveView(reactTag);
+
+            if (view instanceof ReactExoplayerView) {
+                ReactExoplayerView videoView = (ReactExoplayerView) view;
+                long position = videoView.getCurrentPosition();
+                promise.resolve(position)
+            }
+        });
+    }
+
     public VideoManagerModule(ReactApplicationContext reactContext) {
         super(reactContext);
         this.reactContext = reactContext;
